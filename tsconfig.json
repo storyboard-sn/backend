@@ -1,0 +1,7 @@
+{
+    "include": ["main.ts", "server/**/*"],
+    "compilerOptions": {
+        "composite": true,
+        "esModuleInterop": true
+    },
+}

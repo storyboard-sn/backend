@@ -1,0 +1,19 @@
+{
+  "dependencies": {
+    "express": "^4.18.2",
+    "npm-run-all": "^4.1.5"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.17",
+    "@typescript-eslint/eslint-plugin": "^5.51.0",
+    "@typescript-eslint/parser": "^5.51.0",
+    "eslint": "^8.33.0",
+    "typescript": "^4.9.5"
+  },
+  "scripts": {
+    "build-only": "tsc --outDir dist",
+    "typecheck": "eslint .",
+    "build": "run-p build-only typecheck",
+    "server": "run-p build && node dist/main.js"
+  }
+}
