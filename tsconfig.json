@@ -1,7 +1,14 @@
 {
     "include": ["main.ts", "server/**/*"],
+
     "compilerOptions": {
         "composite": true,
-        "esModuleInterop": true
-    }
+        "esModuleInterop": true,
+        "target": "ES2022",
+        "baseUrl": ".",
+        "moduleResolution": "node",
+        "paths": {
+            "@/*": ["./server/*"]
+        }
+    },
 }
