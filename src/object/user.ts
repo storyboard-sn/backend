@@ -1,6 +1,7 @@
 import { Collection } from 'mongodb';
-import * as bcrypt from 'bcrypt';
+
 import { Storyboard } from '@/server';
+import { Hasher } from '@/util/hash';
 
 export enum Palette {
     PRIMARY    = 'primary',
@@ -27,45 +28,50 @@ export class User {
         this.manager = manager;
         this.record = record;
     }
+
+    public authenticate(password: string): boolean {
+        return Hasher.hash(password) == this.record.password;
+    }
+}
+
+export class UserManagerError extends Error {
+    constructor(message: string) {
+        super(message);
+    }
 }
 
 export class UserManager {
-    public static readonly PASSWORD_SALTROUNDS = 16;
-
     private collection: Collection<UserRecord>;
 
     constructor (collection: Collection<UserRecord>) {
         this.collection = collection;
     }
 
-    public get(tag: string): User | undefined {
-        const userRecord = this.collection.findOne({tag: tag});
+    public async get(tag: string): Promise<User | undefined> {
+        const userRecord = await this.collection.findOne({tag: tag});
 
-        if (!userRecord)
+        console.log(typeof(userRecord), userRecord);
+
+        if (userRecord == null)
             return undefined;
 
         return new User(this, (userRecord as unknown) as UserRecord);
     }
 
-    public create(tag: string, password: string): boolean {
-        let encryptedPassword;
+    public async create(tag: string, password: string) {
+        if (await this.get(tag))
+            throw new UserManagerError(`Tag ${tag} already exists`);
 
-        bcrypt.hash(password, UserManager.PASSWORD_SALTROUNDS,
-            (error: Error | undefined, password: string) => {
-                if (error)
-                    encryptedPassword = undefined;
-                encryptedPassword = password;
-            }
-        );
-
+        let encryptedPassword = Hasher.hash(password);
         if (!encryptedPassword)
-            return false;
+            throw new UserManagerError(`Couldn't create an encrypted password`);
 
         let userRecord: UserRecord = {
             tag: tag,
             password: password,
             ...UserRecordDefaults
         };
+        
         this.collection.insertOne(userRecord);
 
         return true;
