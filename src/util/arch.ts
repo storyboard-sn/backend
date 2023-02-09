@@ -10,7 +10,7 @@ export abstract class Subrouter {
         this.path   = path;
         this.router = Router({mergeParams: true});
 
-        app.server.use(path, this.router);
+        app.restServer.use(path, this.router);
 
         this.setup(this.router);
     }
