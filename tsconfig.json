@@ -9,6 +9,7 @@
         "moduleResolution": "node",
         "paths": {
             "@/*": ["./server/*"]
-        }
+        },
+        "plugins": [{ "transform": "typescript-rtti/dist/transformer" }]
     },
 }
