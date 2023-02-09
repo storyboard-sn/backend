@@ -4,7 +4,7 @@ import { Storyboard } from '@/storyboard';
 
 import { Subrouter } from '@/util/arch';
 import { HttpCode } from '@/util/http';
-import { handle, RestRequest } from '@/util/rest';
+import { RestRequest } from '@/util/rest';
 
 export interface UserAuthRequest extends RestRequest {
     tag: string;
@@ -21,14 +21,13 @@ export class UserSubrouter extends Subrouter {
     }
 
     public authenticate(request: Request, response: Response) {
-        handle<UserAuthRequest>(request.body,
-            (body: UserAuthRequest) => {
-                response.status(HttpCode.OK);
-            },
-            (body) => {
-                response.status(HttpCode.BAD_REQUEST);
-            }
-        );
+        let requestObj: UserAuthRequest = request.body;
+
+        if (!requestObj.tag || !requestObj.password)
+            response.status(HttpCode.BAD_REQUEST);
+        else {
+            response.status(HttpCode.OK);
+        }
 
         response.send();
     }
