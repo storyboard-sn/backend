@@ -3,8 +3,8 @@ tsRegister();
 
 import { ø, Storyboard } from './src/server';
 
-ø.run();
+process.on('SIGUSR2', () => ø.stop());
+process.on('SIGQUIT', () => ø.stop());
+process.on('SIGINT',  () => ø.stop());
 
-process.on('SIGUSR2', () => Storyboard.instance.stop());
-process.on('SIGQUIT', () => Storyboard.instance.stop());
-process.on('SIGINT',  () => Storyboard.instance.stop());
+ø.run();
