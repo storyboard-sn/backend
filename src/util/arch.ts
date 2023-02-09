@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-import { Storyboard } from '@/storyboard';
+import { Storyboard } from '@/server';
 
 export abstract class Subrouter {
     private path: string;

@@ -1,7 +1,7 @@
 import { register as tsRegister } from 'typescript-paths';
 tsRegister();
 
-import { Storyboard } from './server/server';
+import { Storyboard } from './src/server';
 
 Storyboard.instance.run();
 
