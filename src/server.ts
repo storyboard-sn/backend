@@ -13,7 +13,7 @@ import { Db, MongoClient, MongoServerSelectionError } from 'mongodb';
 import { HttpCode } from '@/util/http';
 import { RestResponse, RestStatus } from '@/util/rest';
 
-import { UserSubrouter } from '@/route/user';
+import { UserPole } from '@/pole/user';
 
 class StoryboardMiddleware {
     public static handleError(
@@ -51,7 +51,7 @@ export class Storyboard {
     private _dbServer?: MongoClient;
     private _db?: Db;
 
-    private _users?: UserSubrouter;
+    private _users?: UserPole;
 
     private _restListener?: Server<typeof IncomingMessage, typeof ServerResponse>;
 
@@ -92,7 +92,7 @@ export class Storyboard {
         return this._db;
     }
 
-    public get users(): UserSubrouter | undefined {
+    public get users(): UserPole | undefined {
         return this._users;
     }
 
@@ -116,7 +116,7 @@ export class Storyboard {
 
         this.logger.info("Successfully created a connection to the database");
 
-        this._users = new UserSubrouter(this);
+        this._users = new UserPole(this);
 
         this._restListener = this.restServer.listen(Storyboard.PORT, () => {
             this.logger.info(`Now listening on port ${Storyboard.PORT}`);
