@@ -6,12 +6,24 @@ import { UserSubrouter } from '@/route/user';
 
 export class Storyboard {
     public static readonly PORT: number = 1987
+
+    private static _instance: Storyboard;
  
     private readonly _logger: Logger;
     private readonly _server: Express;
 
+    public static get instance(): Storyboard {
+        if (!Storyboard._instance)
+            Storyboard._instance = new Storyboard();
+        return Storyboard._instance
+    }
+
     constructor() {
         this._server = express();
+
+        this._server.use(express.json());
+        this._server.use(express.urlencoded({ extended: true }));
+
         this._logger = pino({
             transport: {
                 target: 'pino-pretty',
