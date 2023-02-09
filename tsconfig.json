@@ -1,15 +1,29 @@
 {
     "include": ["main.ts", "server/**/*"],
 
+    "ts-node": {
+        "compiler": "ttypescript"
+    },
+
     "compilerOptions": {
+        "strict": true,
+        "target": "ES2022",
+        "noEmitOnError": true,
         "composite": true,
         "esModuleInterop": true,
-        "target": "ES2022",
-        "baseUrl": ".",
         "moduleResolution": "node",
+        "baseUrl": ".",
         "paths": {
             "@/*": ["./server/*"]
         },
-        "plugins": [{ "transform": "typescript-rtti/dist/transformer" }]
+        "plugins": [
+            { "transform": "ts-transformer-keys/transformer" },
+            { "transform": "typescript-rtti/dist/transformer" }
+        ]
     },
+
+    "exclude": [
+        "node_modules",
+        "dist"
+    ]
 }
