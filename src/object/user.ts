@@ -1,7 +1,10 @@
+import * as bcrypt from 'bcrypt';
+
 import { Collection } from 'mongodb';
 
 import { Storyboard } from '@/server';
-import { Hasher } from '@/util/hash';
+
+const SALT_ROUNDS = 8;
 
 export enum Palette {
     PRIMARY    = 'primary',
@@ -29,8 +32,8 @@ export class User {
         this.record = record;
     }
 
-    public authenticate(password: string): boolean {
-        return Hasher.hash(password) == this.record.password;
+    public async authenticate(password: string): Promise<boolean> {
+        return await bcrypt.compare(password, this.record.password);
     }
 }
 
@@ -47,10 +50,12 @@ export class UserManager {
         this.collection = collection;
     }
 
+    public async has(tag: string): Promise<boolean> {
+        return await this.collection.findOne({tag: tag}) != null;
+    }
+
     public async get(tag: string): Promise<User | undefined> {
         const userRecord = await this.collection.findOne({tag: tag});
-
-        console.log(typeof(userRecord), userRecord);
 
         if (userRecord == null)
             return undefined;
@@ -59,21 +64,22 @@ export class UserManager {
     }
 
     public async create(tag: string, password: string) {
-        if (await this.get(tag))
+        if (await this.has(tag))
             throw new UserManagerError(`Tag ${tag} already exists`);
 
-        let encryptedPassword = Hasher.hash(password);
-        if (!encryptedPassword)
-            throw new UserManagerError(`Couldn't create an encrypted password`);
+        bcrypt.hash(password, SALT_ROUNDS)
+            .then((encryptedPassword: string) => {
+                if (!encryptedPassword)
+                    throw new UserManagerError
+                        ('Couldn\'t create an encrypted password');
 
-        let userRecord: UserRecord = {
-            tag: tag,
-            password: password,
-            ...UserRecordDefaults
-        };
-        
-        this.collection.insertOne(userRecord);
-
-        return true;
+                let userRecord: UserRecord = {
+                    tag: tag,
+                    password: encryptedPassword,
+                    ...UserRecordDefaults
+                };
+                
+                this.collection.insertOne(userRecord);
+            });
     }
 }
