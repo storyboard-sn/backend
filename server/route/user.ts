@@ -17,7 +17,7 @@ export class UserSubrouter extends Subrouter {
     }
 
     protected setup(router: Router) {
-        router.get('/auth', this.authenticate);
+        router.post('/auth', this.authenticate);
     }
 
     public authenticate(request: Request, response: Response) {
