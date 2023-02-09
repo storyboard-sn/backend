@@ -44,6 +44,12 @@ export class Storyboard {
         '?appname=storyboard';
 
     private static _instance: Storyboard;
+
+    public static get instance(): Storyboard {
+        if (!Storyboard._instance)
+            Storyboard._instance = new Storyboard();
+        return Storyboard._instance;
+    }
  
     private readonly _logger: Logger;
     private readonly _restServer: Express;
@@ -55,13 +61,7 @@ export class Storyboard {
 
     private _restListener?: Server<typeof IncomingMessage, typeof ServerResponse>;
 
-    public static get instance(): Storyboard {
-        if (!Storyboard._instance)
-            Storyboard._instance = new Storyboard();
-        return Storyboard._instance
-    }
-
-    constructor() {
+    private constructor() {
         this._restServer = express();
 
         this._restServer.use(express.urlencoded({ extended: true }));
@@ -129,3 +129,5 @@ export class Storyboard {
         this._dbServer!.close();
     }
 }
+
+export const ø = Storyboard.instance;

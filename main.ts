@@ -1,9 +1,9 @@
 import { register as tsRegister } from 'typescript-paths';
 tsRegister();
 
-import { Storyboard } from './src/server';
+import { ø, Storyboard } from './src/server';
 
-Storyboard.instance.run();
+ø.run();
 
 process.on('SIGUSR2', () => Storyboard.instance.stop());
 process.on('SIGQUIT', () => Storyboard.instance.stop());
