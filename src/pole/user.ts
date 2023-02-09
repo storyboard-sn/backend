@@ -1,6 +1,6 @@
 import { Router, Request, Response } from 'express';
 
-import { Storyboard } from '@/server';
+import { ø, Storyboard } from '@/server';
 
 import { Subrouter } from '@/util/arch';
 import { HttpCode } from '@/util/http';
@@ -61,8 +61,7 @@ export class UserPole extends Subrouter {
             return;
         }
 
-        Storyboard.instance.logger.debug
-            (`Handling tag '${requestObj.tag}' creation`);
+        ø.logger.debug(`Handling tag '${requestObj.tag}' creation`);
 
         let userExists: boolean;
 
@@ -70,7 +69,7 @@ export class UserPole extends Subrouter {
             userExists = await this._userManager.has(requestObj.tag);
         } catch (error) {
             if (error instanceof Error)
-                Storyboard.instance.logger.fatal
+                ø.logger.fatal
                     (error, `Failed to test user existence (${error.message})`);
             responseObj.status = RestStatus.SERVER_ERROR;
 
@@ -79,7 +78,7 @@ export class UserPole extends Subrouter {
         }
     
         if (userExists) {
-            Storyboard.instance.logger.debug(
+            ø.logger.debug(
                 'Cannot create a user with already existing tag ' +
                 `'${requestObj.tag}'`
             );
@@ -91,7 +90,7 @@ export class UserPole extends Subrouter {
 
         this._userManager.create(requestObj.tag, requestObj.password)
             .then(() => {
-                Storyboard.instance.logger.debug
+                ø.logger.debug
                     (`User with tag '${requestObj.tag}' created successfully`);
 
                 responseObj.status = RestStatus.SUCCESS;
@@ -99,7 +98,7 @@ export class UserPole extends Subrouter {
             })
             .catch((error) => {
                 if (error instanceof Error)
-                    Storyboard.instance.logger.fatal(error,
+                    ø.logger.fatal(error,
                         `Failed to create user with tag '${requestObj.tag}' ` +
                         `(${error.message})`
                     );
@@ -121,8 +120,7 @@ export class UserPole extends Subrouter {
             return;
         }
 
-        Storyboard.instance.logger.debug
-            (`Handling log-in request for user '${requestObj.tag}'`);
+        ø.logger.debug(`Handling log-in request for user '${requestObj.tag}'`);
 
         let user: User | undefined;
 
@@ -130,7 +128,7 @@ export class UserPole extends Subrouter {
             user = await this._userManager.get(requestObj.tag);
         } catch (error) {
             if (error instanceof Error)
-                Storyboard.instance.logger.fatal
+                ø.logger.fatal
                     (error, `Failed to get user info (${error.message})`);
             responseObj.status = RestStatus.SERVER_ERROR;
 
@@ -139,8 +137,7 @@ export class UserPole extends Subrouter {
         }
 
         if (user == undefined) {
-            Storyboard.instance.logger.debug
-                (`User '${requestObj.tag}' does not exist`);
+            ø.logger.debug(`User '${requestObj.tag}' does not exist`);
             responseObj.status = RestStatus.FAILURE;
 
             response.send(responseObj);
@@ -150,14 +147,14 @@ export class UserPole extends Subrouter {
         user.authenticate(requestObj.password)
             .then((success: boolean) => {
                 if (success) {
-                    Storyboard.instance.logger.debug
+                    ø.logger.debug
                         (`Log-in success for user '${requestObj.tag}'`);
                     responseObj = {
                         status: RestStatus.SUCCESS,
                         session: this._sessionManager.spawn(user!)
                     };
                 } else {
-                    Storyboard.instance.logger.debug
+                    ø.logger.debug
                         (`Log-in failed for user '${requestObj.tag}'`);
                     responseObj.status = RestStatus.FAILURE;
                 }
@@ -177,20 +174,17 @@ export class UserPole extends Subrouter {
             return;
         }
 
-        Storyboard.instance.logger.debug
-            (`Log-out request from session '${requestObj.session}'`);
+        ø.logger.debug(`Log-out request from session '${requestObj.session}'`);
         
         if (!this._sessionManager.destroy(requestObj.session)) {
-            Storyboard.instance.logger.debug
-                (`Session '${requestObj.session}' does not exist`);
+            ø.logger.debug(`Session '${requestObj.session}' does not exist`);
             responseObj.status = RestStatus.FAILURE;
 
             response.send(responseObj);
             return;
         }
 
-        Storyboard.instance.logger.debug
-            (`Log-out success from session '${requestObj.session}'`);
+        ø.logger.debug(`Log-out success from session '${requestObj.session}'`);
 
         responseObj.status = RestStatus.SUCCESS;
         response.send(responseObj);

@@ -8,7 +8,7 @@ import { Express, Request, Response } from 'express-serve-static-core';
 
 import pino, { Logger } from 'pino';
 
-import { Db, MongoClient, MongoServerSelectionError } from 'mongodb';
+import { Db, MongoClient } from 'mongodb';
 
 import { HttpCode } from '@/util/http';
 import { RestResponse, RestStatus } from '@/util/rest';
@@ -22,8 +22,7 @@ class StoryboardMiddleware {
     ) {
         const body: RestResponse = { status:  RestStatus.SERVER_ERROR };
 
-        Storyboard.instance.logger.fatal
-            (`Unexpected error while handling '${request.originalUrl}'`);
+        ø.logger.fatal(`Unexpected error while handling '${request.originalUrl}'`);
         
         response
             .status(HttpCode.INTERNAL_SERVER_ERROR)
