@@ -27,6 +27,15 @@ class StoryboardMiddleware {
         response
             .status(HttpCode.INTERNAL_SERVER_ERROR)
             .send(body);
+    }
+
+    public static populateHeaders(
+        request: Request, response: Response, next: NextFunction
+    ) {
+        response
+            .setHeader('Access-Control-Allow-Origin', '*')
+            .setHeader('Access-Control-Allow-Methods', 'GET, POST')
+            .setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
         next();
     }
@@ -66,6 +75,7 @@ export class Storyboard {
         this._restServer.use(express.urlencoded({ extended: true }));
         this._restServer.use(express.json());
         this._restServer.use(StoryboardMiddleware.handleError);
+        this._restServer.use(StoryboardMiddleware.populateHeaders);
 
         this._logger = pino({
             transport: {
