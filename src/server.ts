@@ -127,9 +127,13 @@ export class Storyboard {
 
         this._users = new UserPole(this);
 
-        this._restListener = this.restServer.listen(Storyboard.PORT, () => {
-            this.logger.info(`Now listening on port ${Storyboard.PORT}`);
-        });
+        this._restListener = this.restServer.listen(
+            Storyboard.PORT, process.env.SB_ADDRESS!,
+            () => {
+                this.logger.info
+                    (`Now listening on ${process.env.SB_ADDRESS}:${Storyboard.PORT}`);
+            }
+        );
     }
 
     public stop() {
