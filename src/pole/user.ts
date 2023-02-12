@@ -5,30 +5,14 @@ import { ø, Storyboard } from '@/server';
 import { Subrouter } from '@/util/arch';
 import { HttpCode } from '@/util/http';
 import { SessionManager } from '@/util/session';
-import { RestRequest, RestResponse, RestStatus } from '@/util/rest';
 import { User, UserManager } from '@/object/user';
 
-export interface UserCreateRequest extends RestRequest {
-    tag: string;
-    password: string;
-}
-
-export interface UserCreateResponse extends RestResponse {}
-
-export interface UserLogInRequest extends RestRequest {
-    tag: string;
-    password: string;
-}
-
-export interface UserLogInResponse extends RestResponse {
-    session?: string;
-}
-
-export interface UserLogOutRequest extends RestRequest {
-    session: string;
-}
-
-export interface UserLogOutResponse extends RestResponse {}
+import { RestStatus } from '@/pole/interface/rest';
+import {
+    UserCreateRequest, UserCreateResponse,
+    UserLogInRequest, UserLogInResponse,
+    UserLogOutRequest, UserLogOutResponse
+} from '@/pole/interface/user' ;
 
 export class UserPole extends Subrouter {
     public static readonly COLLECTION = 'users';
