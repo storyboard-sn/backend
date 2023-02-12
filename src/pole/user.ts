@@ -45,12 +45,12 @@ export class UserPole extends Subrouter {
     }
 
     protected setup(router: Router) {
-        router.post('/create', this.create.bind(this));
+        router.post('/sign-up', this.signUp.bind(this));
         router.post('/log-in', this.logIn.bind(this));
         router.post('/log-out',this.logOut.bind(this));
     }
 
-    private async create(request: Request, response: Response) {
+    private async signUp(request: Request, response: Response) {
         let requestObj: UserCreateRequest = request.body;
         let responseObj: UserCreateResponse = { status: RestStatus.UNKNOWN };
         response.status(HttpCode.OK);
