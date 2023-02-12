@@ -12,7 +12,7 @@ import { Db, MongoClient } from 'mongodb';
 
 import { HttpCode } from '@/util/http';
 
-import { RestResponse, RestStatus } from '@/pole/interface/rest';
+import { RestResponse, RestStatus } from '@/interface/rest';
 import { UserPole } from '@/pole/user';
 
 class StoryboardMiddleware {
