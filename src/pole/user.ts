@@ -7,12 +7,12 @@ import { HttpCode } from '@/util/http';
 import { SessionManager } from '@/util/session';
 import { User, UserManager } from '@/object/user';
 
-import { RestStatus } from '@/pole/interface/rest';
+import { RestStatus } from '@/interface/rest';
 import {
     UserCreateRequest, UserCreateResponse,
     UserLogInRequest, UserLogInResponse,
     UserLogOutRequest, UserLogOutResponse
-} from '@/pole/interface/user' ;
+} from '@/interface/user' ;
 
 export class UserPole extends Subrouter {
     public static readonly COLLECTION = 'users';
