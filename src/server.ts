@@ -2,9 +2,9 @@ import * as packageInfo from '../package.json';
 import 'dotenv/config';
 
 import express from 'express';
-import { Server, IncomingMessage, ServerResponse } from 'http';
-import { NextFunction } from 'connect';
-import { Express, Request, Response } from 'express-serve-static-core';
+import type { Server, IncomingMessage, ServerResponse } from 'http';
+import type { NextFunction } from 'connect';
+import type { Express, Request, Response } from 'express-serve-static-core';
 
 import pino, { Logger } from 'pino';
 

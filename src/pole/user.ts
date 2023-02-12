@@ -1,4 +1,4 @@
-import { Router, Request, Response } from 'express';
+import type { Router, Request, Response } from 'express';
 
 import { ø, Storyboard } from '@/server';
 
@@ -8,7 +8,7 @@ import { SessionManager } from '@/util/session';
 import { User, UserManager } from '@/object/user';
 
 import { RestStatus } from '@/interface/rest';
-import {
+import type {
     UserCreateRequest, UserCreateResponse,
     UserLogInRequest, UserLogInResponse,
     UserLogOutRequest, UserLogOutResponse
@@ -158,7 +158,8 @@ export class UserPole extends Subrouter {
             return;
         }
 
-        ø.logger.debug(`Log-out request from session '${requestObj.session}'`);
+        ø.logger.debug
+            (`Handling log-out request from session '${requestObj.session}'`);
         
         if (!this._sessionManager.destroy(requestObj.session)) {
             ø.logger.debug(`Session '${requestObj.session}' does not exist`);

@@ -1,8 +1,6 @@
 import * as bcrypt from 'bcrypt';
 
-import { Collection } from 'mongodb';
-
-import { Storyboard } from '@/server';
+import type { Collection } from 'mongodb';
 
 const SALT_ROUNDS = 8;
 
