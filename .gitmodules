@@ -1,0 +1,3 @@
+[submodule "src/pole/interface"]
+	path = src/pole/interface
+	url = git@github.com:storyboard-sn/rest-interface.git
