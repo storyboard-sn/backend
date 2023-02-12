@@ -22,7 +22,7 @@ class StoryboardMiddleware {
     ) {
         const body: RestResponse = { status:  RestStatus.SERVER_ERROR };
 
-        ø.logger.fatal(`Unexpected error while handling '${request.originalUrl}'`);
+        ø.logger.fatal(error, `Unexpected error while handling '${request.originalUrl}'`);
         
         response
             .status(HttpCode.INTERNAL_SERVER_ERROR)
