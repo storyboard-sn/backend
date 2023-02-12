@@ -11,8 +11,8 @@ import pino, { Logger } from 'pino';
 import { Db, MongoClient } from 'mongodb';
 
 import { HttpCode } from '@/util/http';
-import { RestResponse, RestStatus } from '@/util/rest';
 
+import { RestResponse, RestStatus } from '@/pole/interface/rest';
 import { UserPole } from '@/pole/user';
 
 class StoryboardMiddleware {
